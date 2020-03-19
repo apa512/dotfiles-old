@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+xmonad_status() {
+  cat /tmp/xmonad
+}
+
+clock() {
+  echo $(date +"%T")
+}
+
+{
+  while true
+  do
+    output="%{l}$(xmonad_status)%{r}$(clock) "
+    echo "$output"
+    sleep 0.2
+  done
+} | lemonbar \
+  -f "Fantasque Sans Mono:size=14" \
+  -u 18 \
+  -B "#002b36"
