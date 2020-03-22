@@ -4,13 +4,15 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'ap/vim-css-color'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-easy-align'
 Plug 'LnL7/vim-nix'
 Plug 'morhetz/gruvbox'
+Plug 'ntpeters/vim-better-whitespace'
 Plug 'scrooloose/nerdtree'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'tpope/vim-fugitive'
 
 " Clojure
-" Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'vim-scripts/paredit.vim', { 'for': 'clojure' }
 

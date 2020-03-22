@@ -1,5 +1,10 @@
 { config, pkgs, ... }:
 
+let
+  myVim = pkgs.vim_configurable.override {
+    python = pkgs.python3.withPackages(ps: with ps; [ pynvim ]);
+  };
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -7,6 +12,7 @@
       <nixos-hardware/common/pc/laptop>
       <nixos-hardware/common/pc/ssd>
       /etc/nixos/hardware-configuration.nix
+      ./xps15.nix
     ];
 
   nixpkgs.config.allowUnfree = true;
@@ -27,6 +33,7 @@
 
     bluetooth.enable = true;
     bumblebee.enable = true;
+    enableRedistributableFirmware = true;
   };
 
   networking = {
@@ -66,13 +73,13 @@
   services = {
     xserver = {
       enable = true;
-      dpi = 180;
+      dpi = 240;
       libinput.enable = true;
 
       layout = "us";
       xkbVariant = "dvorak";
       xkbOptions = "ctrl:nocaps";
-      
+
       windowManager.xmonad.enable = true;
       windowManager.xmonad.extraPackages = haskellPackages: [
         haskellPackages.xmonad-contrib
@@ -88,41 +95,58 @@
     fwupd.enable = true;
     kbfs.enable = true;
     keybase.enable = true;
+    tlp.enable = true;
   };
 
-  environment.variables.EDITOR = "nvim";
+  environment.variables.EDITOR = "vim";
 
   environment.systemPackages = with pkgs; [
+    # GUI apps
     bitwarden
     calibre
     chromium
     evince
     firefox
+    meld
     slack
     spotify
     transmission-gtk
     vlc
 
+    # CLI apps
+    cmus
+    myVim
+    neovim
+    ranger
+
     # Programming
+    clojure
+    leiningen
+    nodejs-10_x
+    (python37.withPackages(ps: with ps; [ pynvim ]))
     ruby
 
-    git
-    (neovim.override {
-      vimAlias = true;
-    })
-    ranger
-    stow
-    unzip
-
+    # Utils
     ag
     arandr
     bar-xft
+    chromedriver
     docker-compose
+    eternal-terminal
+    git
+    gnumake
+    ncurses.dev
     openvpn
     pavucontrol
     polybar
+    postgresql
     rofi
     rxvt_unicode
+    scrot
+    stow
+    unrar
+    unzip
+    wirelesstools
     xfontsel
     xmobar
   ];
@@ -141,7 +165,7 @@
     isNormalUser = true;
     home = "/home/erik";
     shell = "${pkgs.fish}/bin/fish";
-    extraGroups = [ "wheel" "docker" "libvirtd" "video" ];
+    extraGroups = [ "wheel" "docker" "video" "vboxusers" ];
     uid = 1000;
   };
 

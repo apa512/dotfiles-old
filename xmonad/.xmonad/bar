@@ -8,10 +8,18 @@ clock() {
   echo $(date +"%T")
 }
 
+battery() {
+  ~/.xmonad/battery
+}
+
+wifi() {
+  echo $(iwgetid -r)
+}
+
 {
   while true
   do
-    output="%{l}$(xmonad_status)%{r}$(clock) "
+    output="%{l}$(xmonad_status)%{r}$(battery)%{F#2aa198}$(wifi)%{F-} $(clock) "
     echo "$output"
     sleep 0.2
   done

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+if [ -n "$1" ]
+then
+  battery_ids=($1)
+else
+  battery_ids=(BAT0 BAT1)
+fi
+
+battery_dir="/sys/class/power_supply"
+
+for bat in "${battery_ids[@]}"
+do
+  if [ -e "$battery_dir/$bat" ]
+  then
+    status="$(cat $battery_dir/$bat/status)"
+    capacity="$(cat $battery_dir/$bat/capacity)"
+
+    if [ "$status" = "Charging" ]
+    then
+      status="%{F93a1a1} +"
+    elif [ "$status" = "Discharging" ]
+    then
+      status="%{F#dc322f} -"
+    else
+      status="%{F#839496}"
+    fi
+
+    echo "$status$capacity %{F-}"
+    break
+  fi
+done

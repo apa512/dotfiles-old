@@ -2,7 +2,7 @@ import XMonad
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.SpawnOn
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
