@@ -1,7 +1,7 @@
 import XMonad
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.SpawnOn
-import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicLog as DL
 import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
@@ -17,29 +17,29 @@ import Codec.Binary.UTF8.String
 import System.IO
 
 main = do
-  spawnPipe $ "~/.xmonad/bar"
+  spawnPipe "~/.xmonad/bar"
   xmonad $
     ewmh $
     docks $
     withUrgencyHook NoUrgencyHook $
-    defaultConfig
+    def
     { terminal = myTerminal
     , modMask = mod4Mask
     , borderWidth = 8
     , normalBorderColor = "#073642"
     , focusedBorderColor = activeColor
     , layoutHook = avoidStruts . smartBorders $ myLayout
-    , manageHook = manageSpawn <+> myManageHook <+> manageHook defaultConfig
+    , manageHook = manageSpawn <+> myManageHook <+> manageHook def
     , startupHook = setWMName "LG3D"
     , workspaces = myWorkspaces
-    , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
+    , handleEventHook = handleEventHook def <+> fullscreenEventHook
     , logHook = myLoghook
     } `additionalKeysP`
     myKeysP
 
 myLoghook =
   dynamicLogWithPP
-    defaultPP
+    DL.def
     { ppCurrent = lemonbarColor "-" activeColor . wrap " " " "
     , ppWsSep = ""
     , ppSep = ""
@@ -51,7 +51,7 @@ myLoghook =
         \s ->
           case s of
             "Full" -> " F "
-            otherwise -> ""
+            _ -> ""
     , ppOutput =
         \s -> do
           h <- openFile "/tmp/xmonad" WriteMode
@@ -78,6 +78,7 @@ avoidMaster =
 myCompose =
   composeAll
     [ (className =? "Transmission-gtk" <&&> stringProperty "WM_WINDOW_ROLE" =? "tr-main") --> doShift "9"
+    , (stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog") --> doRectFloat (W.RationalRect 0.05 0.05 0.5 0.5)
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ]
 
