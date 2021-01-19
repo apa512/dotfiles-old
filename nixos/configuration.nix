@@ -130,6 +130,15 @@ in
         };
       };
 
+      je = {
+        config = (builtins.readFile ./expressvpn/my_expressvpn_jersey_udp.ovpn);
+        autoStart = false;
+        authUserPass = {
+          username = secrets.expressvpn.username;
+          password = secrets.expressvpn.password;
+        };
+      };
+
       ua = {
         config = (builtins.readFile ./expressvpn/my_expressvpn_ukraine_udp.ovpn);
         autoStart = false;
@@ -178,7 +187,7 @@ in
     vlc
 
     # CLI apps
-    beets
+    # beets
     cmus
     myVim
     neovim
@@ -190,6 +199,7 @@ in
     nodejs-10_x
     (python3.withPackages(ps: with ps; [ pynvim ]))
     ruby
+    rustup
     yarn
 
     # Utils
@@ -231,7 +241,7 @@ in
   ];
 
   fonts = {
-    fontDir.enable = true;
+    enableFontDir = true;
     fonts = with pkgs; [
       corefonts
       fantasque-sans-mono
@@ -251,5 +261,5 @@ in
 
   nix.trustedUsers = [ "root" "erik" ];
 
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.09";
 }
